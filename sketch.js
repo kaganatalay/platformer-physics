@@ -12,8 +12,6 @@ function setup() {
   parser = new LevelParser();
   parser.generate(level1.source);
 
-  platforms.push(new Platform(width / 2, height / 2, width / 2, height / 6, 1));
-  platforms.push(new Platform(width / 2, height, width / 1.5, 50));
 }
 
 function draw() {
@@ -41,21 +39,39 @@ function draw() {
 
 function preload() {
   level1 = loadJSON("level.json");
+
+
 }
 
 class LevelParser {
   constructor() {
-    
+    this.origin = createVector(0, 0);
+    this.cell_size = createVector(150, 150);
   }
 
   generate(source) {
+    let location = this.origin.copy();
+    for(let i = 0; i < source.length; i++) {
+      location.x = this.origin.x;
+      location.y += this.cell_size.y;
+
+      for(let j = 0; j < source[i].length; j++) {
+        location.x += this.cell_size.x;
+        if(source[i][j] == 1) {
+          platforms.push(new Platform(location.x - this.cell_size.x/2, location.y - this.cell_size.y/2, this.cell_size.x, this.cell_size.y));
+        }
+        
+        
+      } 
+    }
+
     console.log(source);
   }
 }
 
 class Player {
   constructor() {
-    this.pos = createVector(width / 2, 0);
+    this.pos = createVector(0, 0);
     this.vel = createVector();
     this.acc = createVector();
     this.collider = createVector();
