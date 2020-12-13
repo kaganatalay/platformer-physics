@@ -6,7 +6,7 @@ let parser;
 let level1;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(800, 800);
   p = new Player();
 
   parser = new LevelParser();
