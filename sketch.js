@@ -1,11 +1,16 @@
 let platforms = [];
 let gravity = 0.14;
 
-let x, y;
+let x, y, p;
+let parser;
+let level1;
+
 function setup() {
   createCanvas(600, 400);
   p = new Player();
 
+  parser = new LevelParser();
+  parser.generate(level1.source);
 
   platforms.push(new Platform(width / 2, height / 2, width / 2, height / 6, 1));
   platforms.push(new Platform(width / 2, height, width / 1.5, 50));
@@ -34,16 +39,30 @@ function draw() {
   pop();
 }
 
+function preload() {
+  level1 = loadJSON("level.json");
+}
+
+class LevelParser {
+  constructor() {
+    
+  }
+
+  generate(source) {
+    console.log(source);
+  }
+}
+
 class Player {
   constructor() {
     this.pos = createVector(width / 2, 0);
     this.vel = createVector();
     this.acc = createVector();
+    this.collider = createVector();
     this.w = 30;
     this.h = 30;
     this.def_force = 0.4;
-    this.collider = createVector();
-
+    
     this.jumps = 2;
     this.max_jumps = 2;
   }
@@ -125,16 +144,10 @@ function mousePressed() {
 }
 
 class Platform {
-  constructor(x, y, w, h, bounciness) {
+  constructor(x, y, w, h) {
     this.pos = createVector(x, y);
     this.w = w;
     this.h = h;
-    if(bounciness) {
-      // 1 < bounciness < 2
-      this.bounciness = bounciness;
-    } else {
-      this.bounciness = 1;
-    }
   }
 
   render() {
@@ -142,7 +155,7 @@ class Platform {
     rectMode(CENTER);
     noStroke();
     fill(100);
-    rect(this.pos.x, this.pos.y, this.w, this.h)
+    rect(this.pos.x, this.pos.y, this.w, this.h);
     pop();
   }
 
@@ -151,7 +164,7 @@ class Platform {
       
       // Y Axis
       if (object.pos.y + object.h / 2 <= this.pos.y - this.h/2 + 1) {
-        object.applyForce(0, -object.vel.y * this.bounciness - gravity - object.acc.y);
+        object.applyForce(0, -object.vel.y - gravity - object.acc.y);
         if (object == p) {
           object.jumps = object.max_jumps;
         }
@@ -169,10 +182,6 @@ class Platform {
       if (object.pos.x - object.h / 2 >= this.pos.x + this.w/2 - 1) {
         object.applyForce(-object.vel.x * 1.5 - object.acc.x * 2, 0);
       }
-
     }
-
-
-
   }
 }
