@@ -148,11 +148,15 @@ class Player {
 }
 
 function keyPressed() {
-
+  if (key == " ") {
+    p.jump();
+  }
 }
 
 function mousePressed() {
-
+  let px = mouseX - x;
+  let py = mouseY - y;
+  platforms.push(new Platform(px, py, 50, 50));
 }
 
 class Platform {
@@ -164,7 +168,36 @@ class Platform {
 
   render() {
     push();
-    
+    rectMode(CENTER);
+    noStroke();
+    fill(100);
+    rect(this.pos.x, this.pos.y, this.w, this.h);
     pop();
+  }
+
+  collide(object) {
+    if (object.collider.x + object.w / 2 >= this.pos.x - this.w / 2 && object.collider.x - object.w / 2 <= this.pos.x + this.w / 2 && object.collider.y + object.h / 2 >= this.pos.y - this.h / 2 && object.collider.y - object.h / 2 <= this.pos.y + this.h / 2) {
+      
+      // Y Axis
+      if (object.pos.y + object.h / 2 <= this.pos.y - this.h/2 + 1) {
+        object.applyForce(0, -object.vel.y - gravity - object.acc.y);
+        if (object == p) {
+          object.jumps = object.max_jumps;
+        }
+      }
+      
+      if (object.pos.y - object.h / 2 >= this.pos.y + this.h/2 - 1) {
+        object.applyForce(0, -object.vel.y + gravity - object.acc.y);
+      }
+      
+      // X Axis
+      if (object.pos.x + object.h / 2 <= this.pos.x - this.w/2 + 1) {
+        object.applyForce(-object.vel.x * 1.5 - object.acc.x * 2, 0);
+      }
+      
+      if (object.pos.x - object.h / 2 >= this.pos.x + this.w/2 - 1) {
+        object.applyForce(-object.vel.x * 1.5 - object.acc.x * 2, 0);
+      }
+    }
   }
 }
