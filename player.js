@@ -1,6 +1,6 @@
 class Player extends Rigidbody {
     constructor(x, y) {
-      super(createVector(x, y), createVector(30, 30), true);
+      super(createVector(x, y), createVector(50, 50), true);
 
     }
   
@@ -35,27 +35,4 @@ class Player extends Rigidbody {
       }
     }
 }
-
-class Npc extends Rigidbody {
-  constructor(x, y) {
-    super(createVector(x, y), createVector(40, 40), true);
-
-  }
-
-  start() {
-    this.render();
-    this.update();
-    this.physics_update();
-  }
-
-  render() {
-    push();
-    fill(255, 150, 0);
-    rect(this.position.x, this.position.y, this.size.x, this.size.y);
-    pop();
-  }
-
-  update() {
-    this.applyForce(0, 0.1);
-  }
-}
+ 

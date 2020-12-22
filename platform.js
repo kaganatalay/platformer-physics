@@ -1,4 +1,6 @@
 let bodies = [];
+let platforms = [];
+
 class Platform {
     constructor(position, size) {
       this.position = position;
