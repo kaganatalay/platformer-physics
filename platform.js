@@ -9,12 +9,12 @@ function TilemapParser(tilemap) {
     let origin;
     for(let j = 0; j < src[i].length; j++) {
       if(src[i][j] == 1) {
-        if(isNaN(origin)) {
+        if(origin == null) {
           origin = j;
         }
         counter++;
 
-        if(src[i][j+1]) {
+        if(src[i][j+1] != null) {
           if(src[i][j+1] == 0) {
             let platform = new Platform(createVector(origin * size.x + counter * size.x / 2, i * size.y + size.y/2), createVector(counter * size.x, size.y));
             platforms.push(platform);
@@ -22,6 +22,10 @@ function TilemapParser(tilemap) {
             origin = null;
             counter = 0;
           }
+        } else {
+          // Reached the end of array
+          let platform = new Platform(createVector(origin * size.x + counter * size.x / 2, i * size.y + size.y/2), createVector(counter * size.x, size.y));
+          platforms.push(platform);
         }
 
         
