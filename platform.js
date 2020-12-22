@@ -1,6 +1,18 @@
 let bodies = [];
 let platforms = [];
 
+function TilemapParser(tilemap) {
+  let src = tilemap.src;
+  let size = tilemap.size;
+
+  for(let i = 0; i < src.length; i++) {
+    for(let j = 0; j < src[i].length; j++) {
+
+    }
+  }
+
+}
+
 class Platform {
     constructor(position, size) {
       this.position = position;
