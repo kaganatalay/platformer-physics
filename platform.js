@@ -4,10 +4,28 @@ let platforms = [];
 function TilemapParser(tilemap) {
   let src = tilemap.src;
   let size = tilemap.size;
-
   for(let i = 0; i < src.length; i++) {
+    let counter = 0;
+    let origin;
     for(let j = 0; j < src[i].length; j++) {
+      if(src[i][j] == 1) {
+        if(isNaN(origin)) {
+          origin = j;
+        }
+        counter++;
 
+        if(src[i][j+1]) {
+          if(src[i][j+1] == 0) {
+            let platform = new Platform(createVector(origin * size.x + counter * size.x / 2, i * size.y + size.y/2), createVector(counter * size.x, size.y));
+            platforms.push(platform);
+
+            origin = null;
+            counter = 0;
+          }
+        }
+
+        
+      } 
     }
   }
 
@@ -17,13 +35,14 @@ class Platform {
     constructor(position, size) {
       this.position = position;
       this.size = size;
+      this.col = color(random(100, 255), random(100, 255), 0);
     }
   
     render() {
       push();
       rectMode(CENTER);
       noStroke();
-      fill(100);
+      fill(this.col);
       rect(this.position.x, this.position.y, this.size.x, this.size.y);
       pop();
     }
