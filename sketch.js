@@ -1,7 +1,12 @@
 let player;
+let canvas;
+let resolution;
+
 function setup() {
-  createCanvas(1200, 800);
+  createCanvas(displayWidth, displayHeight);
   rectMode(CENTER);
+
+  canvas = createVector(width, height);
   player = new Player(width/2, height/2);
   //platforms.push(new Platform(createVector(width/2, height * 0.7), createVector(500, 75)));
   
@@ -23,6 +28,7 @@ function draw() {
   background(51);
   
   push();
+  scale(resolution);
   translate(width/2 - player.position.x, height/2 - player.position.y);
   
   for(let platform of platforms) {
